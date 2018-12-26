@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2018
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example", "example.vcxproj", "{9E5AB93A-0CCE-4BAC-9FCB-0FC9CB5EB8D2}"
 EndProject
@@ -61,8 +61,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sinks", "sinks", "{27D16BB9
 		..\include\spdlog\sinks\android_sink.h = ..\include\spdlog\sinks\android_sink.h
 		..\include\spdlog\sinks\ansicolor_sink.h = ..\include\spdlog\sinks\ansicolor_sink.h
 		..\include\spdlog\sinks\base_sink.h = ..\include\spdlog\sinks\base_sink.h
+		..\include\spdlog\sinks\daily_file_sink.h = ..\include\spdlog\sinks\daily_file_sink.h
 		..\include\spdlog\sinks\dist_sink.h = ..\include\spdlog\sinks\dist_sink.h
 		..\include\spdlog\sinks\file_sinks.h = ..\include\spdlog\sinks\file_sinks.h
+		..\include\spdlog\sinks\hourly_file_sink.h = ..\include\spdlog\sinks\hourly_file_sink.h
 		..\include\spdlog\sinks\msvc_sink.h = ..\include\spdlog\sinks\msvc_sink.h
 		..\include\spdlog\sinks\null_sink.h = ..\include\spdlog\sinks\null_sink.h
 		..\include\spdlog\sinks\ostream_sink.h = ..\include\spdlog\sinks\ostream_sink.h
