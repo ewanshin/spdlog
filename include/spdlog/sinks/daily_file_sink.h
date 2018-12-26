@@ -40,6 +40,11 @@ struct daily_filename_calculator
     }
 };
 
+enum DailyRotationMode {
+	PerDay = 0,
+	PerHour,
+	PerMinutes	
+};
 /*
  * Rotating file sink based on date. rotates at midnight
  */
@@ -54,10 +59,27 @@ public:
         , rotation_m_(rotation_minute)
         , truncate_(truncate)
     {
-        if (rotation_hour < 0 || rotation_hour > 23 || rotation_minute < 0 || rotation_minute > 59)
-        {
-            throw spdlog_ex("daily_file_sink: Invalid rotation time in ctor");
-        }
+		if (-1 == rotation_minute)
+		{
+			rotation_mode_ = DailyRotationMode::PerMinutes;
+		}
+		else if (-1 == rotation_hour)
+		{
+			rotation_mode_ = DailyRotationMode::PerHour;
+			if (rotation_minute < 0 || rotation_minute > 59)
+			{
+				throw spdlog_ex("daily_file_sink: Invalid rotation time in ctor");
+			}
+		}
+		else
+		{
+			rotation_mode_ = DailyRotationMode::PerDay;
+			if (rotation_hour < 0 || rotation_hour > 23 || rotation_minute < 0 || rotation_minute > 59)
+			{
+				throw spdlog_ex("daily_file_sink: Invalid rotation time in ctor");
+			}
+
+		}
         auto now = log_clock::now();
         file_helper_.open(FileNameCalc::calc_filename(base_filename_, now_tm(now)), truncate_);
         rotation_tp_ = next_rotation_tp_();
@@ -101,7 +123,19 @@ private:
         {
             return rotation_time;
         }
-        return {rotation_time + std::chrono::hours(24)};
+
+		if (DailyRotationMode::PerMinutes == rotation_mode_)
+		{
+			return{ rotation_time + std::chrono::minutes(1) };
+		}
+		else if (DailyRotationMode::PerHour == rotation_mode_)
+		{
+			return{ rotation_time + std::chrono::hours(1) };
+		}
+		else
+		{
+			return{ rotation_time + std::chrono::hours(24) };
+		}
     }
 
     filename_t base_filename_;
@@ -110,6 +144,7 @@ private:
     log_clock::time_point rotation_tp_;
     details::file_helper file_helper_;
     bool truncate_;
+	DailyRotationMode rotation_mode_;
 };
 
 using daily_file_sink_mt = daily_file_sink<std::mutex>;
